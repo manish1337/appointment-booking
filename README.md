@@ -1,4 +1,4 @@
-# Calendar API
+# Appointment Booking
 
 ## API Endpoints
 
