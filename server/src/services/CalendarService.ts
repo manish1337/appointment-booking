@@ -26,7 +26,8 @@ export class CalendarService {
 
   private static generateTimeSlots(date: DateTime, timezone: string): string[] {
     const slots: string[] = [];
-    let currentTime = date.setZone(timezone).set({
+    // First create slots in US/Eastern time
+    let currentTime = date.setZone(CalendarConfig.DEFAULT_TIMEZONE).set({
       hour: CalendarConfig.START_HOURS,
       minute: 0,
       second: 0,
@@ -41,7 +42,9 @@ export class CalendarService {
     });
 
     while (currentTime < endTime) {
-      slots.push(currentTime.toFormat("yyyy-MM-dd'T'HH:mm:ss"));
+      // Convert each slot to requested timezone before adding to array
+      const convertedTime = currentTime.setZone(timezone);
+      slots.push(convertedTime.toFormat("yyyy-MM-dd'T'HH:mm:ss"));
       currentTime = currentTime.plus({ minutes: CalendarConfig.SLOT_DURATION });
     }
 
